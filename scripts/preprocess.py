@@ -47,16 +47,16 @@ def create_features(
         df
 ):
     """Creates new features."""
-    
+
     # add date-derived features
-    df['Day_Of_Week'] = pd.DatetimeIndex(df['Date']).dayofweek
+    df['Week_of_Year'] = pd.DatetimeIndex(df['Date']).week
     df['Month_Of_Year'] = pd.DatetimeIndex(df['Date']).month
     df['Quarter_Of_Year'] = pd.DatetimeIndex(df['Date']).quarter
 
     # add intraday gaps
     df['High_Low_Pct'] = (df.High - df.Low) / df.Low  # percentage intraday change
     df['Open_Close_Pct'] = (df.Open.shift(-1) - df.Close) / df.Close  # percentage change using next day open
-    
+
     # drop rows with missing values
     df = df.dropna()
     
@@ -106,9 +106,9 @@ def prep_data(
 
     # subset data
     train_df = train_df[['Close', 'Volume', 'High_Low_Pct', 'Open_Close_Pct',
-                         'Day_Of_Week', 'Month_Of_Year', 'Quarter_Of_Year']]
+                         'Week_of_Year', 'Month_Of_Year', 'Quarter_Of_Year']]
     test_df = test_df[['Close', 'Volume', 'High_Low_Pct', 'Open_Close_Pct',
-                         'Day_Of_Week', 'Month_Of_Year', 'Quarter_Of_Year']]
+                         'Week_of_Year', 'Month_Of_Year', 'Quarter_Of_Year']]
 
     if plot_df:
         save_data(train_df, 'plot_df.csv')
